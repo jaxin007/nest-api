@@ -6,10 +6,13 @@ import {
   Inject,
   HttpCode,
   Controller,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { classToPlain } from 'class-transformer';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Controller('/users')
 export class UsersController {
@@ -17,7 +20,7 @@ export class UsersController {
 
   @Get('/:id')
   async getUsers(@Param('id') id: number) {
-    return await this.usersService.getUser(id);
+    return classToPlain(await this.usersService.getUser(id));
   }
 
   @Get('/')
@@ -29,5 +32,17 @@ export class UsersController {
   @HttpCode(201)
   async createUser(@Body() body: CreateUserDto) {
     await this.usersService.createUser(body);
+  }
+
+  @Patch('/:id')
+  @HttpCode(204)
+  async updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
+    await this.usersService.updateUser(id, body);
+  }
+
+  @Delete('/:id')
+  @HttpCode(204)
+  async deleteUser(@Param('id') id: number) {
+    await this.usersService.deleteUser(id);
   }
 }
