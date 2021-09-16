@@ -1,0 +1,6 @@
+{
+  "watch": [".", ".env"],
+  "ext": "ts,json",
+  "exec": "ts-node ./src/main.ts"
+}
+
